@@ -14,15 +14,32 @@ class Window(QtWidgets.QMainWindow):
 	#_______________________________________VIEWS______________________________________
 
 	def initUI(self):
-		# create a widget for the page and give it a layout
+		# create a widget for the page with a vertical layout
 		self.page = QtWidgets.QWidget()
-		self.layout = QtWidgets.QVBoxLayout()
-		self.layout.setAlignment(QtCore.Qt.AlignCenter)
-		self.page.setLayout(self.layout)
-		# give the page a lightgray background
+		self.Vlayout = QtWidgets.QVBoxLayout()
+		self.Vlayout.setAlignment(QtCore.Qt.AlignCenter)
+		self.page.setLayout(self.Vlayout)
+		# set bg color to pink
 		self.page.setStyleSheet("QWidget {background-color: pink}")
-		# set it as central widget
+		# set page as central widget
 		self.setCentralWidget(self.page)
+		# add a grid layout for the buttons
+		self.Glayout = QtWidgets.QGridLayout()
+		self.Vlayout.addLayout(self.Glayout)
+		# a list to refer to the buttons
+		self.btn_list = []
+		# create 9 buttons and add them to the list
+		for row in range(3):
+			for col in range(3):
+				self.btn = QtWidgets.QPushButton("Button"+str(row)+str(col))
+				self.btn.setMinimumSize(100, 100)
+				self.btn_list.append(self.btn)
+				self.Glayout.addWidget(self.btn,row,col)
+		
+
+		
+		print(self.btn_list)
+
 
 
 
