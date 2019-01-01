@@ -1,4 +1,4 @@
-import sys
+import sys, time
 from PyQt5 import QtWidgets, QtCore
 from functools import partial
 
@@ -10,7 +10,7 @@ class Window(QtWidgets.QMainWindow):
 		
 		self.setGeometry(450, 200, 600, 400)
 		self.setWindowTitle("Tic Tac Toe")
-
+		self.show()
 		self.initUI()
 
 	#_______________________________________VIEWS______________________________________
@@ -27,8 +27,12 @@ class Window(QtWidgets.QMainWindow):
 		# add a grid layout for the buttons
 		self.Glayout = QtWidgets.QGridLayout()
 		self.Vlayout.addLayout(self.Glayout)
-		
 		# create 9 buttons and add them to the grid layout
+		self.add_btns()
+		# initialize a list to store Xs and Os
+		self.init_list()
+
+	def add_btns(self):
 		self.btn_indx = 0 # counter for buttons indeces
 		for row in range(3):
 			for col in range(3):
@@ -39,9 +43,6 @@ class Window(QtWidgets.QMainWindow):
 				# connect each button while looping to the function passing the button as argument
 				self.btn.clicked.connect(partial(self.btn_clicked, self.btn, self.btn_indx)) # currying, or partial application
 				self.btn_indx += 1
-		
-		# initialize a list to store Xs and Os
-		self.init_list()
 
 	#_______________________________________METHODS______________________________________
 
@@ -56,14 +57,19 @@ class Window(QtWidgets.QMainWindow):
 		if self.click_counter % 2 == 0:
 			self.click_list[indx] = "X"
 			btn.setText("X")
-			self.click_counter += 1
+			print(self.click_list)
 		# O turn is odd
 		else:
 			self.click_list[indx] = "O"
 			btn.setText("O")
-			self.click_counter += 1
+			print(self.click_list)
+		self.click_counter += 1
+		# start checking after the third X (turn 5)
 		if self.click_counter > 4:
 			self.check()
+		if self.click_counter == 9:
+			QtWidgets.QMessageBox.warning(self, "winner!", "It is a draw")
+			self.disable_btns()
 
 	def check(self):
 		self.triplet_check(0, 1, 2)
@@ -77,8 +83,15 @@ class Window(QtWidgets.QMainWindow):
 
 	def triplet_check(self, i, j, k):
 		if self.click_list[i] == self.click_list[j] == self.click_list[k]:
-			print(str(self.click_list[i]) + " won!")
+			print(self.click_list[i] + " Won!!")
+			QtWidgets.QMessageBox.warning(self, "winner!", "Player " + self.click_list[i] + " Won!!")
+			self.disable_btns()
 		else: pass
+
+	def disable_btns(self):
+		for i in range(self.Glayout.count()):
+			self.Glayout.itemAt(i).widget().setEnabled(False)
+
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
