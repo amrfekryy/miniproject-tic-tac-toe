@@ -52,19 +52,33 @@ class Window(QtWidgets.QMainWindow):
 		self.click_counter = 0
 
 	def btn_clicked(self, btn, indx):
-		print(btn)
-		print(indx)
+		# X turn is even
 		if self.click_counter % 2 == 0:
 			self.click_list[indx] = "X"
-			print(self.click_list)
 			btn.setText("X")
 			self.click_counter += 1
+		# O turn is odd
 		else:
 			self.click_list[indx] = "O"
-			print(self.click_list)
 			btn.setText("O")
 			self.click_counter += 1
+		if self.click_counter > 4:
+			self.check()
 
+	def check(self):
+		self.triplet_check(0, 1, 2)
+		self.triplet_check(3, 4, 5)
+		self.triplet_check(6, 7, 8)
+		self.triplet_check(0, 3, 6)
+		self.triplet_check(1, 4, 7)
+		self.triplet_check(2, 5, 8)
+		self.triplet_check(0, 4, 8)
+		self.triplet_check(2, 4, 6)
+
+	def triplet_check(self, i, j, k):
+		if self.click_list[i] == self.click_list[j] == self.click_list[k]:
+			print(str(self.click_list[i]) + " won!")
+		else: pass
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
