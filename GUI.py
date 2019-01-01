@@ -1,5 +1,7 @@
 import sys
 from PyQt5 import QtWidgets, QtCore
+from functools import partial
+
 
 class Window(QtWidgets.QMainWindow):
 
@@ -26,19 +28,22 @@ class Window(QtWidgets.QMainWindow):
 		# add a grid layout for the buttons
 		self.Glayout = QtWidgets.QGridLayout()
 		self.Vlayout.addLayout(self.Glayout)
-		# a list to refer to the buttons
-		self.btn_list = []
 		# create 9 buttons and add them to the list
 		for row in range(3):
 			for col in range(3):
 				self.btn = QtWidgets.QPushButton("Button"+str(row)+str(col))
+				# connect each button while looping to the function passing the button as argument
+				self.btn.clicked.connect(partial(self.btn_clicked, self.btn))
 				self.btn.setMinimumSize(100, 100)
-				self.btn_list.append(self.btn)
 				self.Glayout.addWidget(self.btn,row,col)
 		
+		for i in range(9):
+			print(self.Glayout.itemAt(i).widget())
 
-		
-		print(self.btn_list)
+	#_______________________________________METHODS______________________________________
+
+	def btn_clicked(self, btn):
+		print(btn)
 
 
 
