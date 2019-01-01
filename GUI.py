@@ -27,6 +27,12 @@ class Window(QtWidgets.QMainWindow):
 		# add a grid layout for the buttons
 		self.Glayout = QtWidgets.QGridLayout()
 		self.Vlayout.addLayout(self.Glayout)
+		# add a play again button
+		self.playagain_btn = QtWidgets.QPushButton("Play Again")
+		self.playagain_btn.setFixedSize(100, 30)
+		self.playagain_btn.clicked.connect(self.new_game)
+		self.Vlayout.addWidget(self.playagain_btn, 0, QtCore.Qt.AlignCenter)
+
 		# create 9 buttons and add them to the grid layout
 		self.add_btns()
 		# initialize a list to store Xs and Os
@@ -92,6 +98,8 @@ class Window(QtWidgets.QMainWindow):
 		for i in range(self.Glayout.count()):
 			self.Glayout.itemAt(i).widget().setEnabled(False)
 
+	def new_game(self):
+		pass
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
