@@ -99,7 +99,19 @@ class Window(QtWidgets.QMainWindow):
 			self.Glayout.itemAt(i).widget().setEnabled(False)
 
 	def new_game(self):
-		pass
+		self.init_list()
+		self.clear_btns()
+		self.enable_btns()
+
+	def clear_btns(self):
+		for i in range(self.Glayout.count()):
+			self.Glayout.itemAt(i).widget().setText("")
+
+	def enable_btns(self):
+		for i in range(self.Glayout.count()):
+			self.Glayout.itemAt(i).widget().setEnabled(True)
+
+
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
