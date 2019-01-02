@@ -58,6 +58,7 @@ class Window(QtWidgets.QMainWindow):
 						   3, 4, 5,
 		                   6, 7, 8]
 		self.click_counter = 0
+		self.win = False
 
 	def btn_clicked(self, btn, indx):
 		# X turn is even
@@ -78,8 +79,8 @@ class Window(QtWidgets.QMainWindow):
 		if self.click_counter > 4:
 			self.check()
 		# check if buttons are done
-		if self.click_counter == 9:
-			QtWidgets.QMessageBox.warning(self, "winner!", "It is a draw")
+		if self.click_counter == 9 and not self.win:
+			QtWidgets.QMessageBox.information(self, "winner!", "It is a draw")
 			self.disable_btns()
 
 	def check(self):
@@ -92,12 +93,13 @@ class Window(QtWidgets.QMainWindow):
 		self.triplet_check(0, 4, 8)
 		self.triplet_check(2, 4, 6)
 
-	def triplet_check(self, i, j, k):
+	def triplet_check(self, i, j, k): 
 		if self.click_list[i] == self.click_list[j] == self.click_list[k]:
 			print(self.click_list[i] + " Won!!")
 			self.triplet_color(i, j, k)
-			QtWidgets.QMessageBox.warning(self, "winner!", "Player " + self.click_list[i] + " Won!!")
+			QtWidgets.QMessageBox.information(self, "winner!", "Player " + self.click_list[i] + " Won!!")
 			self.disable_btns()
+			self.win = True
 		else: pass
 
 	def triplet_color(self, i, j, k):
