@@ -18,7 +18,7 @@ class Window(QtWidgets.QMainWindow):
 	def initUI(self):
 		# create a widget for the page with a vertical layout
 		self.page = QtWidgets.QWidget()
-		self.page.setStyleSheet("QWidget {background-color: pink}")
+		self.page.setStyleSheet("QWidget {background-color: green}")
 		self.Vlayout = QtWidgets.QVBoxLayout()
 		self.Vlayout.setAlignment(QtCore.Qt.AlignCenter)
 		self.page.setLayout(self.Vlayout)
@@ -44,6 +44,7 @@ class Window(QtWidgets.QMainWindow):
 			for col in range(3):
 				self.btn = QtWidgets.QPushButton()
 				self.btn.setMinimumSize(100, 100)
+				self.btn.setStyleSheet("QPushButton {background-color: lightgreen; font-size: 25px; color: Blue}")
 				self.Glayout.addWidget(self.btn,row,col)
 				
 				# connect each button while looping to the function passing the button as argument
@@ -69,10 +70,14 @@ class Window(QtWidgets.QMainWindow):
 			self.click_list[indx] = "O"
 			btn.setText("O")
 			print(self.click_list)
+		# disable button choosed
+		btn.setEnabled(False)
+		# increnment counter
 		self.click_counter += 1
 		# start checking after the third X (turn 5)
 		if self.click_counter > 4:
 			self.check()
+		# check if buttons are done
 		if self.click_counter == 9:
 			QtWidgets.QMessageBox.warning(self, "winner!", "It is a draw")
 			self.disable_btns()
@@ -90,9 +95,15 @@ class Window(QtWidgets.QMainWindow):
 	def triplet_check(self, i, j, k):
 		if self.click_list[i] == self.click_list[j] == self.click_list[k]:
 			print(self.click_list[i] + " Won!!")
+			self.triplet_color(i, j, k)
 			QtWidgets.QMessageBox.warning(self, "winner!", "Player " + self.click_list[i] + " Won!!")
 			self.disable_btns()
 		else: pass
+
+	def triplet_color(self, i, j, k):
+		self.Glayout.itemAt(i).widget().setStyleSheet("QPushButton {background-color: red; font-size: 25px; color: Blue}")
+		self.Glayout.itemAt(j).widget().setStyleSheet("QPushButton {background-color: red; font-size: 25px; color: Blue}")
+		self.Glayout.itemAt(k).widget().setStyleSheet("QPushButton {background-color: red; font-size: 25px; color: Blue}")
 
 	def disable_btns(self):
 		for i in range(self.Glayout.count()):
@@ -105,7 +116,10 @@ class Window(QtWidgets.QMainWindow):
 
 	def clear_btns(self):
 		for i in range(self.Glayout.count()):
+			# clear text
 			self.Glayout.itemAt(i).widget().setText("")
+			# clear style
+			self.Glayout.itemAt(i).widget().setStyleSheet("QPushButton {background-color: lightgreen; font-size: 25px; color: Blue}")
 
 	def enable_btns(self):
 		for i in range(self.Glayout.count()):
